@@ -2,6 +2,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import React, { useState } from "react";
 import Items from "./components/Items";
+import Categories from "./components/Categories";
 function App() {
 
   const products = [
@@ -13,8 +14,12 @@ function App() {
     { id: '6', title: 'diamond', img: 'ring.jpg', desc: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eum, iure.', category: 'ring', price: '345.00' },
   ]
   const order = []
+  const currentItems = []
   const [items, setItems] = useState(products)
+  const [currentItem, setCurrentItem] = useState(products)
   let [orders, setOrders] = useState(order)
+
+  let ordersLenght = orders.length
 
   const addToOrder = (item) => {
     let isInArray = false
@@ -28,15 +33,32 @@ function App() {
 
     }
   }
-  let ordersLenght = orders.length
+
+  const deleteOrder = id => {
+    setOrders(orders = orders.filter(el => el.id !== id))
+  }
+
+  const chooseCategories = (category) => {
+
+    if (category === 'all') {
+      setCurrentItem(items)
+      return
+    }
+    setCurrentItem(items.filter(el => el.category === category))
+  }
+
+
 
   return (
     <div className="wrapper">
 
-      <Header orders={orders} ordersLenght={ordersLenght} />
+      <Header orders={orders} ordersLenght={ordersLenght} onDelete={deleteOrder} />
+
+      <Categories chooseCategories={chooseCategories} />
+
       <main>
         {
-          items.map(item => {
+          currentItem.map(item => {
             return <Items
               key={item.id}
               title={item.title}

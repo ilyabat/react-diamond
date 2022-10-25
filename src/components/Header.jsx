@@ -4,16 +4,19 @@ import Order from './Order';
 
 
 
-export default function Header({orders, ordersLenght}) {
+export default function Header({ orders, ordersLenght, onDelete }) {
 
     const showOrders = orders => {
+        let sumPrice = 0;
+        orders.forEach(el => sumPrice += +el.price)
         return (
             <div className='shop-cart'>
                 {
                     orders.map(el => {
-                        return <Order key={el.id} item={el} />
+                        return <Order onDelete={onDelete} key={el.id} item={el} />
                     })
                 }
+                <p className='all-price'>Ціна: {sumPrice}</p>
             </div>)
 
     }
@@ -40,8 +43,8 @@ export default function Header({orders, ordersLenght}) {
                 {cartOpen && (
                     <div>
                         {
-                          ordersLenght > 0 ? showOrders(orders) : showNothing()
-                          
+                            ordersLenght > 0 ? showOrders(orders) : showNothing()
+
                         }
                     </div>
                 )}
