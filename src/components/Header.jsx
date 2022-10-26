@@ -1,6 +1,11 @@
 import React from 'react'
-import { FaShoppingCart } from 'react-icons/fa'
+
 import Order from './Order';
+import About from './About';
+
+import { FaShoppingCart } from 'react-icons/fa'
+
+import { Link } from 'react-router-dom';
 
 
 
@@ -20,22 +25,26 @@ export default function Header({ orders, ordersLenght, onDelete }) {
             </div>)
 
     }
+
     const showNothing = () => {
-        return (<div className='nothing shop-cart'>
-            В корзині товарів немає
-        </div>)
+        return (
+            <div className='nothing shop-cart'>
+                В корзині товарів немає
+            </div>
+        )
     }
+
     let [cartOpen, setCartOpen] = React.useState(false);
 
 
     return (
         <header className='header'>
             <div>
-                <span className="header__logo">DS</span>
+                <span className="header__logo"><Link to={'/'}>DS</Link></span>
 
                 <ul className="header__menu">
-                    <li>Про нас</li>
-                    <li>Контакти</li>
+                    <li><Link to={'/about'}>Про нас</Link></li>
+                    <li><Link to={'/contacts'}>Контакти</Link></li>
                     <li>Профіль</li>
                 </ul>
                 <FaShoppingCart onClick={() => setCartOpen(cartOpen = !cartOpen)} className={`header__cart ${cartOpen && 'header__active'}`} />

@@ -1,8 +1,16 @@
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import React, { useState } from "react";
-import Items from "./components/Items";
 import Categories from "./components/Categories";
+
+
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import React, { useState } from "react";
+import About from "./components/About";
+import Item from "./components/Item";
+import Contact from "./components/Contact";
+
+
+
 function App() {
 
   const products = [
@@ -22,7 +30,9 @@ function App() {
   let ordersLenght = orders.length
 
   const addToOrder = (item) => {
+
     let isInArray = false
+
     orders.forEach(el => {
       if (el.id === item.id) {
         isInArray = true
@@ -38,8 +48,7 @@ function App() {
     setOrders(orders = orders.filter(el => el.id !== id))
   }
 
-  const chooseCategories = (category) => {
-
+  const chooseCategories = category => {
     if (category === 'all') {
       setCurrentItem(items)
       return
@@ -51,28 +60,28 @@ function App() {
 
   return (
     <div className="wrapper">
+      <BrowserRouter>
+        <Header orders={orders} ordersLenght={ordersLenght} onDelete={deleteOrder} />
 
-      <Header orders={orders} ordersLenght={ordersLenght} onDelete={deleteOrder} />
+        <Routes>
 
-      <Categories chooseCategories={chooseCategories} />
+          <Route path='/about' element={<About />} />
 
-      <main>
-        {
-          currentItem.map(item => {
-            return <Items
-              key={item.id}
-              title={item.title}
-              img={item.img}
-              desc={item.desc}
-              price={item.price}
-              onAdd={addToOrder}
-              item={item}
-            />
-          })
-        }
-      </main>
+          <Route path='/contacts' element={<Contact />} />
 
-      <Footer />
+          <Route path="/" element={
+            <div>
+              <Categories chooseCategories={chooseCategories} />
+              <Item currentItem={currentItem} addToOrder={addToOrder} />
+            </div>
+          }
+          />
+
+        </Routes>
+        <Footer />
+
+
+      </BrowserRouter>
     </div>
   );
 }
